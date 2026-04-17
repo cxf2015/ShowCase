@@ -1,0 +1,380 @@
+<mxfile host="65bd71144e">
+    <diagram name="LLM Router Pipeline" id="router-pipeline">
+        <mxGraphModel dx="1549" dy="766" grid="1" gridSize="10" guides="0" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="1200" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="title" value="&lt;b&gt;LLM Router: Prefill is All You Need&lt;/b&gt;&lt;br&gt;完整 Pipeline 架构图" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=16;" parent="1" vertex="1">
+                    <mxGeometry x="190" y="170" width="400" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="input_box" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1f5fe;strokeColor=#01579b;arcSize=6;fontSize=14;" parent="1" vertex="1">
+                    <mxGeometry x="260" y="240" width="200" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="input_label" value="&lt;b&gt;📝 输入层&lt;/b&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=14;" parent="1" vertex="1">
+                    <mxGeometry x="260" y="245" width="200" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="input_content" value="用户 Query&lt;br&gt;&lt;i&gt;例如：证明哥德巴赫猜想&lt;/i&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=14;" parent="1" vertex="1">
+                    <mxGeometry x="260" y="275" width="200" height="45" as="geometry"/>
+                </mxCell>
+                <mxCell id="arrow1" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#666666;strokeWidth=2;fontSize=14;" parent="1" source="input_box" target="encoder_box" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="arrow2" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#666666;strokeWidth=2;fontSize=14;" parent="1" source="encoder_box" target="pca_box" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="arrow3" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#666666;strokeWidth=2;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="pca_box" target="stn_box" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="stn_layer1" value="Linear(900, 512)&lt;br&gt;+ ReLU + Dropout" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f48fb1;strokeColor=#c2185b;fontSize=11;" parent="1" vertex="1">
+                    <mxGeometry x="2840" y="1010" width="140" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="stn_layer2" value="Linear(512, 512)&lt;br&gt;+ ReLU + Dropout" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f48fb1;strokeColor=#c2185b;fontSize=11;" parent="1" vertex="1">
+                    <mxGeometry x="3010" y="1010" width="140" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="stn_layer3" value="Linear(512, 512)&lt;br&gt;+ ReLU" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f48fb1;strokeColor=#c2185b;fontSize=11;" parent="1" vertex="1">
+                    <mxGeometry x="3180" y="1010" width="120" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="stn_arrow2" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#c2185b;strokeWidth=2;" parent="1" source="stn_layer1" target="stn_layer2" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="stn_arrow3" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#c2185b;strokeWidth=2;" parent="1" source="stn_layer2" target="stn_layer3" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="arrow6" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#666666;strokeWidth=2;" parent="1" source="policy_box" target="api_box" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="legend_box" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fafafa;strokeColor=#666666;arcSize=3;" parent="1" vertex="1">
+                    <mxGeometry x="1040" y="1480" width="220" height="200" as="geometry"/>
+                </mxCell>
+                <mxCell id="legend_title" value="&lt;b&gt;📊 维度说明&lt;/b&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=12;" parent="1" vertex="1">
+                    <mxGeometry x="1040" y="1485" width="220" height="25" as="geometry"/>
+                </mxCell>
+                <mxCell id="legend_content" value="• 8,192-d: Qwen 隐藏状态&lt;br&gt;• 100-d: PCA 降维后&lt;br&gt;• 900-d: 9模型×100拼接&lt;br&gt;• 9×1-d: 各模型置信度&lt;br&gt;&lt;br&gt;&lt;b&gt;颜色说明:&lt;/b&gt;&lt;br&gt;🟦 输入层&lt;br&gt;🟧 Encoder (冻结)&lt;br&gt;🟩 降维层&lt;br&gt;🟨 特征复制&lt;br&gt;🟥 Router (训练)&lt;br&gt;🟪 输出头&lt;br&gt;🟥 策略层&lt;br&gt;🟦 API层" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=10;" parent="1" vertex="1">
+                    <mxGeometry x="1050" y="1510" width="200" height="165" as="geometry"/>
+                </mxCell>
+                <mxCell id="note_box" value="&lt;b&gt;关键创新:&lt;/b&gt;&lt;br&gt;1. Encoder-Target 解耦: Qwen 预测所有模型&lt;br&gt;2. Fisher J 层选择: 非最后一层&lt;br&gt;3. SharedTrunk: 跨模型信息共享&lt;br&gt;4. 成本感知: λ 权衡精度与成本" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff9c4;strokeColor=#f9a825;arcSize=3;fontSize=11;" parent="1" vertex="1">
+                    <mxGeometry x="1040" y="1700" width="280" height="100" as="geometry"/>
+                </mxCell>
+                <mxCell id="2" value="" style="group;fontSize=14;" vertex="1" connectable="0" parent="1">
+                    <mxGeometry x="220" y="361" width="280" height="160" as="geometry"/>
+                </mxCell>
+                <mxCell id="encoder_box" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=light-dark(#e8f5e9, #241a09);strokeColor=light-dark(#2e7d32, #fb7b35);arcSize=6;fontSize=14;" parent="2" vertex="1">
+                    <mxGeometry width="280" height="160" as="geometry"/>
+                </mxCell>
+                <mxCell id="encoder_label" value="&lt;b&gt;🔧 Encoder 层 (冻结权重)&lt;/b&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=14;" parent="2" vertex="1">
+                    <mxGeometry y="5" width="280" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="encoder_content" value="&lt;b&gt;Qwen-3.5-122B&lt;/b&gt;&lt;br&gt;Prefill 前向传播&lt;br&gt;&lt;br&gt;Layer L 提取 (Fisher J 选定)&lt;br&gt;Last-Token 隐藏状态&lt;br&gt;&lt;br&gt;&lt;font color=&quot;#d32f2f&quot;&gt;&lt;b&gt;📐 输出维度: 8,192-d&lt;/b&gt;&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=14;" parent="2" vertex="1">
+                    <mxGeometry y="35" width="280" height="120" as="geometry"/>
+                </mxCell>
+                <mxCell id="3" value="" style="group;fontSize=14;" vertex="1" connectable="0" parent="1">
+                    <mxGeometry x="260" y="551" width="200" height="120" as="geometry"/>
+                </mxCell>
+                <mxCell id="pca_box" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e8f5e9;strokeColor=#2e7d32;arcSize=6;fontSize=14;" parent="3" vertex="1">
+                    <mxGeometry width="200" height="120" as="geometry"/>
+                </mxCell>
+                <mxCell id="pca_label" value="&lt;b&gt;📉 降维层&lt;/b&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=14;" parent="3" vertex="1">
+                    <mxGeometry y="5" width="200" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="pca_content" value="PCA 降维&lt;br&gt;保留 95% 方差&lt;br&gt;&lt;br&gt;&lt;font color=&quot;#d32f2f&quot;&gt;&lt;b&gt;📐 输出: 100-d&lt;/b&gt;&lt;/font&gt;&lt;br&gt;特征向量 f" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=14;" parent="3" vertex="1">
+                    <mxGeometry y="35" width="200" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="5" value="" style="group" vertex="1" connectable="0" parent="1">
+                    <mxGeometry x="90" y="698" width="550" height="320" as="geometry"/>
+                </mxCell>
+                <mxCell id="stn_box" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fce4ec;strokeColor=#c2185b;arcSize=6;" parent="5" vertex="1">
+                    <mxGeometry width="540" height="320" as="geometry"/>
+                </mxCell>
+                <mxCell id="stn_label" value="&lt;b&gt;🧠 SharedTrunkNet (可训练)&lt;/b&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=16;" parent="5" vertex="1">
+                    <mxGeometry y="5" width="540" height="35" as="geometry"/>
+                </mxCell>
+                <mxCell id="heads_label" value="9个独立输出头 (每个: Linear(512, 1) + Sigmoid)" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=16;fontStyle=1" parent="5" vertex="1">
+                    <mxGeometry x="20" y="130" width="500" height="20" as="geometry"/>
+                </mxCell>
+                <mxCell id="head1" value="P(Claude)&lt;br&gt;[0,1]" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1bee7;strokeColor=#8e24aa;fontSize=12;" parent="5" vertex="1">
+                    <mxGeometry x="5" y="170" width="70" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="head2" value="P(GPT-5.4)&lt;br&gt;[0,1]" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1bee7;strokeColor=#8e24aa;fontSize=12;" parent="5" vertex="1">
+                    <mxGeometry x="85" y="170" width="70" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="head3" value="P(GPT-5.2)&lt;br&gt;[0,1]" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1bee7;strokeColor=#8e24aa;fontSize=12;" parent="5" vertex="1">
+                    <mxGeometry x="165" y="170" width="70" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="head4" value="P(Qwen-122B)&lt;br&gt;[0,1]" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1bee7;strokeColor=#8e24aa;fontSize=12;" parent="5" vertex="1">
+                    <mxGeometry x="245" y="170" width="80" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="head5" value="P(GPT-OSS-120B)&lt;br&gt;[0,1]" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1bee7;strokeColor=#8e24aa;fontSize=12;" parent="5" vertex="1">
+                    <mxGeometry x="335" y="170" width="90" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="head6" value="P(Nemotron-S-120B)&lt;br&gt;[0,1]" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1bee7;strokeColor=#8e24aa;fontSize=12;" parent="5" vertex="1">
+                    <mxGeometry x="435" y="170" width="100" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="head7" value="P(Nemotron-N-30B)&lt;br&gt;[0,1]" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1bee7;strokeColor=#8e24aa;fontSize=12;" parent="5" vertex="1">
+                    <mxGeometry x="5" y="240" width="100" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="head8" value="P(Qwen-35B)&lt;br&gt;[0,1]" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1bee7;strokeColor=#8e24aa;fontSize=12;" parent="5" vertex="1">
+                    <mxGeometry x="115" y="240" width="80" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="head9" value="P(GPT-OSS-20B)&lt;br&gt;[0,1]" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1bee7;strokeColor=#8e24aa;fontSize=12;" parent="5" vertex="1">
+                    <mxGeometry x="205" y="240" width="90" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="11" value="Linear(900, 512)&lt;br&gt;+ ReLU + Dropout" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f48fb1;strokeColor=#c2185b;fontSize=14;" vertex="1" parent="5">
+                    <mxGeometry x="60" y="50" width="140" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="12" value="Linear(512, 512)&lt;br&gt;+ ReLU + Dropout" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f48fb1;strokeColor=#c2185b;fontSize=14;" vertex="1" parent="5">
+                    <mxGeometry x="230" y="50" width="140" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="13" value="Linear(512, 512)&lt;br&gt;+ ReLU" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f48fb1;strokeColor=#c2185b;fontSize=14;" vertex="1" parent="5">
+                    <mxGeometry x="400" y="50" width="120" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="14" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#c2185b;strokeWidth=2;fontSize=14;" edge="1" parent="5" source="11" target="12">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="15" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#c2185b;strokeWidth=2;fontSize=14;" edge="1" parent="5" source="12" target="13">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="6" value="" style="group" vertex="1" connectable="0" parent="1">
+                    <mxGeometry x="1040" y="1826" width="220" height="120" as="geometry"/>
+                </mxCell>
+                <mxCell id="replicate_box" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff8e1;strokeColor=#f57f17;arcSize=6;" parent="6" vertex="1">
+                    <mxGeometry width="220" height="120" as="geometry"/>
+                </mxCell>
+                <mxCell id="replicate_label" value="&lt;b&gt;📋 特征复制&lt;/b&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=14;" parent="6" vertex="1">
+                    <mxGeometry y="5" width="220" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="replicate_content" value="K = 9 个模型&lt;br&gt;[f | f | f | f | f | f | f | f | f]&lt;br&gt;&lt;br&gt;&lt;font color=&quot;#d32f2f&quot;&gt;&lt;b&gt;📐 输入维度: 900-d&lt;/b&gt;&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=12;" parent="6" vertex="1">
+                    <mxGeometry y="35" width="220" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="8" value="" style="group" vertex="1" connectable="0" parent="1">
+                    <mxGeometry x="40" y="1058" width="640" height="180" as="geometry"/>
+                </mxCell>
+                <mxCell id="policy_box" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=light-dark(#e8f5e9, #2c1b1e);strokeColor=light-dark(#2e7d32, #ff9191);arcSize=6;" parent="8" vertex="1">
+                    <mxGeometry x="100" width="440" height="180" as="geometry"/>
+                </mxCell>
+                <mxCell id="policy_label" value="&lt;b&gt;⚖️ 路由策略层&lt;/b&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=16;" parent="8" vertex="1">
+                    <mxGeometry x="140" y="5" width="360" height="35" as="geometry"/>
+                </mxCell>
+                <mxCell id="16" style="edgeStyle=none;html=1;" edge="1" parent="8" source="cost_module" target="score_calc">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="cost_module" value="成本估计模块&lt;br&gt;每个模型的成本取在训练集上的平均值cost_norm" style="rounded=1;whiteSpace=wrap;html=1;fillColor=light-dark(#87cf8b, #552a2e);strokeColor=#c62828;fontSize=11;" parent="8" vertex="1">
+                    <mxGeometry x="120" y="50" width="140" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="score_calc" value="分数计算&lt;br&gt;&lt;i&gt;score = λ·P - (1-λ)·cost_norm&lt;/i&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=light-dark(#83e289, #934a4a);strokeColor=light-dark(#b0d8b3, #ff9191);fontSize=11;fontStyle=1" parent="8" vertex="1">
+                    <mxGeometry x="320" y="50" width="200" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="9" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#666666;strokeWidth=2;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1" source="stn_box" target="policy_box">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="370" y="668" as="sourcePoint"/>
+                        <mxPoint x="370" y="708" as="targetPoint"/>
+                        <Array as="points">
+                            <mxPoint x="360" y="1038"/>
+                            <mxPoint x="360" y="1038"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="10" value="" style="group" vertex="1" connectable="0" parent="1">
+                    <mxGeometry x="240" y="1288" width="240" height="120" as="geometry"/>
+                </mxCell>
+                <mxCell id="api_box" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e8eaf6;strokeColor=#3949ab;arcSize=6;" parent="10" vertex="1">
+                    <mxGeometry width="240" height="120" as="geometry"/>
+                </mxCell>
+                <mxCell id="api_label" value="&lt;b&gt;☁️ API 调用层&lt;/b&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=14;" parent="10" vertex="1">
+                    <mxGeometry y="5" width="240" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="api_content" value="调用选中模型 API&lt;br&gt;生成答案&lt;br&gt;&lt;br&gt;&lt;b&gt;返回用户&lt;/b&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=12;" parent="10" vertex="1">
+                    <mxGeometry y="35" width="240" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="17" value="&lt;b&gt;Our: Model capability representation-based model routing&lt;/b&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=16;" vertex="1" parent="1">
+                    <mxGeometry x="823" y="170" width="400" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="18" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1f5fe;strokeColor=#01579b;arcSize=6;fontSize=14;" vertex="1" parent="1">
+                    <mxGeometry x="933" y="240" width="200" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="19" value="&lt;b&gt;📝 输入层&lt;/b&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=14;" vertex="1" parent="1">
+                    <mxGeometry x="933" y="245" width="200" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="20" value="用户 Query&lt;br&gt;&lt;i&gt;例如：证明哥德巴赫猜想&lt;/i&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=14;" vertex="1" parent="1">
+                    <mxGeometry x="933" y="275" width="200" height="45" as="geometry"/>
+                </mxCell>
+                <mxCell id="21" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#666666;strokeWidth=2;fontSize=14;" edge="1" parent="1" source="18" target="26">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="23" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#666666;strokeWidth=2;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1" source="28" target="34">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="1033" y="671" as="sourcePoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="24" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#666666;strokeWidth=2;" edge="1" parent="1" source="51" target="57">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="25" value="" style="group;fontSize=14;" vertex="1" connectable="0" parent="1">
+                    <mxGeometry x="893" y="391" width="280" height="119" as="geometry"/>
+                </mxCell>
+                <mxCell id="26" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=light-dark(#e8f5e9, #241a09);strokeColor=light-dark(#2e7d32, #fb7b35);arcSize=6;fontSize=14;" vertex="1" parent="25">
+                    <mxGeometry width="280" height="119" as="geometry"/>
+                </mxCell>
+                <mxCell id="27" value="&lt;b&gt;🔧 Encoder 层 (冻结权重)&lt;/b&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=14;" vertex="1" parent="25">
+                    <mxGeometry y="3.71875" width="280" height="22.3125" as="geometry"/>
+                </mxCell>
+                <mxCell id="28" value="&lt;b&gt;mobile-bert&amp;nbsp;&lt;br&gt;&lt;/b&gt;20M&amp;nbsp;参数&lt;br&gt;&lt;br&gt;&lt;font color=&quot;#d32f2f&quot;&gt;&lt;b&gt;📐 输出维度: 768-d&lt;/b&gt;&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=14;" vertex="1" parent="25">
+                    <mxGeometry y="26.03125" width="280" height="89.25" as="geometry"/>
+                </mxCell>
+                <mxCell id="33" value="" style="group" vertex="1" connectable="0" parent="1">
+                    <mxGeometry x="763" y="698" width="550" height="320" as="geometry"/>
+                </mxCell>
+                <mxCell id="34" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fce4ec;strokeColor=#c2185b;arcSize=6;" vertex="1" parent="33">
+                    <mxGeometry width="540" height="320" as="geometry"/>
+                </mxCell>
+                <mxCell id="35" value="&lt;b&gt;🧠&amp;nbsp;Dual-branch quality &amp;amp; token prediction (可训练)&lt;/b&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=16;" vertex="1" parent="33">
+                    <mxGeometry y="5" width="540" height="35" as="geometry"/>
+                </mxCell>
+                <mxCell id="64" value="" style="group;fontSize=14;" vertex="1" connectable="0" parent="33">
+                    <mxGeometry x="50" y="115" width="460" height="71" as="geometry"/>
+                </mxCell>
+                <mxCell id="46" value="Linear(768, 512)&lt;br&gt;+ ReLU + Dropout" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f48fb1;strokeColor=#c2185b;fontSize=14;" vertex="1" parent="64">
+                    <mxGeometry width="140" height="36" as="geometry"/>
+                </mxCell>
+                <mxCell id="47" value="Linear(512, 256)&lt;br&gt;+ ReLU + Dropout" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f48fb1;strokeColor=#c2185b;fontSize=14;" vertex="1" parent="64">
+                    <mxGeometry x="170" width="140" height="36" as="geometry"/>
+                </mxCell>
+                <mxCell id="48" value="Linear(256, 1)&lt;div&gt;P&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f48fb1;strokeColor=#c2185b;fontSize=14;" vertex="1" parent="64">
+                    <mxGeometry x="340" width="120" height="36" as="geometry"/>
+                </mxCell>
+                <mxCell id="49" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#c2185b;strokeWidth=2;fontSize=14;" edge="1" parent="64" source="46" target="47">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="50" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#c2185b;strokeWidth=2;fontSize=14;" edge="1" parent="64" source="47" target="48">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="72" value="&lt;b&gt;llms token length predict&lt;/b&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=16;" vertex="1" parent="64">
+                    <mxGeometry x="105" y="36" width="230" height="35" as="geometry"/>
+                </mxCell>
+                <mxCell id="65" value="" style="group;fontSize=14;" vertex="1" connectable="0" parent="33">
+                    <mxGeometry x="50" y="186" width="460" height="36" as="geometry"/>
+                </mxCell>
+                <mxCell id="66" value="Linear(768, 512)&lt;br&gt;+ ReLU + Dropout" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f48fb1;strokeColor=#c2185b;fontSize=14;" vertex="1" parent="65">
+                    <mxGeometry width="140" height="36" as="geometry"/>
+                </mxCell>
+                <mxCell id="67" value="Linear(512, 256)&lt;br&gt;+ ReLU + Dropout" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f48fb1;strokeColor=#c2185b;fontSize=14;" vertex="1" parent="65">
+                    <mxGeometry x="170" width="140" height="36" as="geometry"/>
+                </mxCell>
+                <mxCell id="68" value="Linear(256, 1)&lt;div&gt;T&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f48fb1;strokeColor=#c2185b;fontSize=14;" vertex="1" parent="65">
+                    <mxGeometry x="340" width="120" height="36" as="geometry"/>
+                </mxCell>
+                <mxCell id="69" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#c2185b;strokeWidth=2;fontSize=14;" edge="1" parent="65" source="66" target="67">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="70" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#c2185b;strokeWidth=2;fontSize=14;" edge="1" parent="65" source="67" target="68">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="71" value="&lt;b&gt;llms quality predict&lt;/b&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=16;" vertex="1" parent="33">
+                    <mxGeometry x="155" y="85" width="230" height="35" as="geometry"/>
+                </mxCell>
+                <mxCell id="51" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=light-dark(#e8f5e9, #2c1b1e);strokeColor=light-dark(#2e7d32, #ff9191);arcSize=6;" vertex="1" parent="1">
+                    <mxGeometry x="813" y="1058" width="440" height="180" as="geometry"/>
+                </mxCell>
+                <mxCell id="54" value="分数计算&lt;br&gt;&lt;i&gt;score = λ·P - (1-λ)·T*price&lt;/i&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=light-dark(#83e289, #934a4a);strokeColor=light-dark(#b0d8b3, #ff9191);fontSize=11;fontStyle=1" vertex="1" parent="1">
+                    <mxGeometry x="933" y="1108" width="200" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="55" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#666666;strokeWidth=2;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1" source="34" target="51">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="1043" y="668" as="sourcePoint"/>
+                        <mxPoint x="1043" y="708" as="targetPoint"/>
+                        <Array as="points">
+                            <mxPoint x="1033" y="1038"/>
+                            <mxPoint x="1033" y="1038"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="56" value="" style="group" vertex="1" connectable="0" parent="1">
+                    <mxGeometry x="913" y="1288" width="240" height="120" as="geometry"/>
+                </mxCell>
+                <mxCell id="57" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e8eaf6;strokeColor=#3949ab;arcSize=6;" vertex="1" parent="56">
+                    <mxGeometry width="240" height="120" as="geometry"/>
+                </mxCell>
+                <mxCell id="58" value="&lt;b&gt;☁️ API 调用层&lt;/b&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=14;" vertex="1" parent="56">
+                    <mxGeometry y="5" width="240" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="59" value="调用选中模型 API&lt;br&gt;生成答案&lt;br&gt;&lt;br&gt;&lt;b&gt;返回用户&lt;/b&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=12;" vertex="1" parent="56">
+                    <mxGeometry y="35" width="240" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="60" value="model 1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1bee7;strokeColor=#8e24aa;fontSize=10;" vertex="1" parent="1">
+                    <mxGeometry x="1358" y="752" width="110" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="61" value="&lt;b&gt;model representation vector&lt;/b&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=16;" vertex="1" parent="1">
+                    <mxGeometry x="1323" y="712" width="230" height="35" as="geometry"/>
+                </mxCell>
+                <mxCell id="62" value="model 2" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1bee7;strokeColor=#8e24aa;fontSize=10;" vertex="1" parent="1">
+                    <mxGeometry x="1373" y="762" width="110" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="63" value="model n" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1bee7;strokeColor=#8e24aa;fontSize=10;" vertex="1" parent="1">
+                    <mxGeometry x="1393" y="772" width="110" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="73" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#666666;strokeWidth=2;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1.001;entryY=0.244;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="60" target="34">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="1353" y="772" as="sourcePoint"/>
+                        <mxPoint x="1303" y="773" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="75" value="&lt;b&gt;⚖️ 路由策略层&lt;/b&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=16;" vertex="1" parent="1">
+                    <mxGeometry x="843" y="1058" width="360" height="35" as="geometry"/>
+                </mxCell>
+                <mxCell id="76" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fafafa;strokeColor=#666666;arcSize=3;" vertex="1" parent="1">
+                    <mxGeometry x="90" y="1720" width="220" height="200" as="geometry"/>
+                </mxCell>
+                <mxCell id="77" value="&lt;b&gt;训练集&lt;/b&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=12;" vertex="1" parent="1">
+                    <mxGeometry x="90" y="1725" width="220" height="25" as="geometry"/>
+                </mxCell>
+                <mxCell id="78" value="• 8,192-d: Qwen 隐藏状态&lt;br&gt;• 100-d: PCA 降维后&lt;br&gt;• 900-d: 9模型×100拼接&lt;br&gt;• 9×1-d: 各模型置信度&lt;br&gt;&lt;br&gt;&lt;b&gt;颜色说明:&lt;/b&gt;&lt;br&gt;🟦 输入层&lt;br&gt;🟧 Encoder (冻结)&lt;br&gt;🟩 降维层&lt;br&gt;🟨 特征复制&lt;br&gt;🟥 Router (训练)&lt;br&gt;🟪 输出头&lt;br&gt;🟥 策略层&lt;br&gt;🟦 API层" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=10;" vertex="1" parent="1">
+                    <mxGeometry x="100" y="1750" width="200" height="165" as="geometry"/>
+                </mxCell>
+                <mxCell id="84" value="" style="group" vertex="1" connectable="0" parent="1">
+                    <mxGeometry x="560" y="370" width="270" height="170" as="geometry"/>
+                </mxCell>
+                <mxCell id="79" value="" style="shape=tape;whiteSpace=wrap;html=1;size=0.2;" vertex="1" parent="84">
+                    <mxGeometry y="30" width="270" height="140" as="geometry"/>
+                </mxCell>
+                <mxCell id="80" value="&lt;b&gt;对比分析&lt;/b&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=14;" vertex="1" parent="84">
+                    <mxGeometry x="90" width="100" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="81" value="&lt;b&gt;使用LLM提取中间层特征，表征能力强，泛化性强&lt;/b&gt;&lt;div&gt;&lt;b&gt;但耗时更长0.3s~2s&lt;/b&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;scrollbar-color: rgb(226, 226, 226) rgb(251, 251, 251); font-family: -apple-system, BlinkMacSystemFont, &amp;quot;Segoe UI&amp;quot;, system-ui, -apple-system, &amp;quot;Segoe UI&amp;quot;, Roboto, Ubuntu, Cantarell, &amp;quot;Noto Sans&amp;quot;, sans-serif, Arial, &amp;quot;PingFang SC&amp;quot;, &amp;quot;Source Han Sans SC&amp;quot;, &amp;quot;Microsoft YaHei UI&amp;quot;, &amp;quot;Microsoft YaHei&amp;quot;, &amp;quot;Noto Sans CJK SC&amp;quot;, sans-serif; letter-spacing: 0.5px; text-align: left; background-color: rgb(255, 255, 255); color: rgba(0, 0, 0, 0.9);&quot;&gt;⭐⭐⭐&lt;/span&gt;&lt;b style=&quot;color: rgb(63, 63, 63); scrollbar-color: rgb(226, 226, 226) rgb(251, 251, 251);&quot;&gt;&lt;/b&gt;&lt;span style=&quot;color: rgba(0, 0, 0, 0.9); scrollbar-color: rgb(226, 226, 226) rgb(251, 251, 251); font-family: -apple-system, BlinkMacSystemFont, &amp;quot;Segoe UI&amp;quot;, system-ui, -apple-system, &amp;quot;Segoe UI&amp;quot;, Roboto, Ubuntu, Cantarell, &amp;quot;Noto Sans&amp;quot;, sans-serif, Arial, &amp;quot;PingFang SC&amp;quot;, &amp;quot;Source Han Sans SC&amp;quot;, &amp;quot;Microsoft YaHei UI&amp;quot;, &amp;quot;Microsoft YaHei&amp;quot;, &amp;quot;Noto Sans CJK SC&amp;quot;, sans-serif; letter-spacing: 0.5px; text-align: left; background-color: rgb(255, 255, 255);&quot;&gt;⭐&lt;/span&gt;&lt;b&gt;&lt;/b&gt;&lt;/div&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=14;" vertex="1" parent="84">
+                    <mxGeometry y="50" width="120" height="120" as="geometry"/>
+                </mxCell>
+                <mxCell id="83" value="&lt;b&gt;提取文本语义特征，表征能力一般，&lt;/b&gt;&lt;div&gt;&lt;b&gt;耗时0.02s，提速100倍&lt;/b&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;scrollbar-color: rgb(226, 226, 226) rgb(251, 251, 251); font-family: -apple-system, BlinkMacSystemFont, &amp;quot;Segoe UI&amp;quot;, system-ui, -apple-system, &amp;quot;Segoe UI&amp;quot;, Roboto, Ubuntu, Cantarell, &amp;quot;Noto Sans&amp;quot;, sans-serif, Arial, &amp;quot;PingFang SC&amp;quot;, &amp;quot;Source Han Sans SC&amp;quot;, &amp;quot;Microsoft YaHei UI&amp;quot;, &amp;quot;Microsoft YaHei&amp;quot;, &amp;quot;Noto Sans CJK SC&amp;quot;, sans-serif; letter-spacing: 0.5px; text-align: left; background-color: rgb(255, 255, 255); color: rgba(0, 0, 0, 0.9);&quot;&gt;⭐⭐⭐&lt;/span&gt;&lt;span style=&quot;color: rgba(0, 0, 0, 0.9); scrollbar-color: rgb(226, 226, 226) rgb(251, 251, 251); font-family: -apple-system, BlinkMacSystemFont, &amp;quot;Segoe UI&amp;quot;, system-ui, -apple-system, &amp;quot;Segoe UI&amp;quot;, Roboto, Ubuntu, Cantarell, &amp;quot;Noto Sans&amp;quot;, sans-serif, Arial, &amp;quot;PingFang SC&amp;quot;, &amp;quot;Source Han Sans SC&amp;quot;, &amp;quot;Microsoft YaHei UI&amp;quot;, &amp;quot;Microsoft YaHei&amp;quot;, &amp;quot;Noto Sans CJK SC&amp;quot;, sans-serif; letter-spacing: 0.5px; text-align: left; background-color: rgb(255, 255, 255);&quot;&gt;⭐&lt;/span&gt;&lt;b&gt;&lt;/b&gt;&lt;/div&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=14;" vertex="1" parent="84">
+                    <mxGeometry x="140" y="30" width="130" height="120" as="geometry"/>
+                </mxCell>
+                <mxCell id="85" value="" style="group" vertex="1" connectable="0" parent="1">
+                    <mxGeometry x="560" y="870" width="270" height="190" as="geometry"/>
+                </mxCell>
+                <mxCell id="86" value="" style="shape=tape;whiteSpace=wrap;html=1;size=0.2;" vertex="1" parent="85">
+                    <mxGeometry y="31.666666666666668" width="270" height="158.33333333333334" as="geometry"/>
+                </mxCell>
+                <mxCell id="87" value="&lt;b&gt;对比分析&lt;/b&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=14;" vertex="1" parent="85">
+                    <mxGeometry x="90" width="100" height="31.666666666666668" as="geometry"/>
+                </mxCell>
+                <mxCell id="88" value="&lt;div&gt;&lt;b&gt;只预测LLM回答质量；&lt;/b&gt;&lt;/div&gt;&lt;b&gt;每个LLM一个预测头，可动态独立预测但工程落地复杂；&lt;/b&gt;&lt;div&gt;&lt;span style=&quot;scrollbar-color: rgb(226, 226, 226) rgb(251, 251, 251); font-family: -apple-system, BlinkMacSystemFont, &amp;quot;Segoe UI&amp;quot;, system-ui, -apple-system, &amp;quot;Segoe UI&amp;quot;, Roboto, Ubuntu, Cantarell, &amp;quot;Noto Sans&amp;quot;, sans-serif, Arial, &amp;quot;PingFang SC&amp;quot;, &amp;quot;Source Han Sans SC&amp;quot;, &amp;quot;Microsoft YaHei UI&amp;quot;, &amp;quot;Microsoft YaHei&amp;quot;, &amp;quot;Noto Sans CJK SC&amp;quot;, sans-serif; letter-spacing: 0.5px; text-align: left; background-color: rgb(255, 255, 255); color: rgba(0, 0, 0, 0.9);&quot;&gt;⭐⭐⭐&lt;/span&gt;&lt;b style=&quot;color: rgb(63, 63, 63); scrollbar-color: rgb(226, 226, 226) rgb(251, 251, 251);&quot;&gt;&lt;/b&gt;&lt;span style=&quot;color: rgba(0, 0, 0, 0.9); scrollbar-color: rgb(226, 226, 226) rgb(251, 251, 251); font-family: -apple-system, BlinkMacSystemFont, &amp;quot;Segoe UI&amp;quot;, system-ui, -apple-system, &amp;quot;Segoe UI&amp;quot;, Roboto, Ubuntu, Cantarell, &amp;quot;Noto Sans&amp;quot;, sans-serif, Arial, &amp;quot;PingFang SC&amp;quot;, &amp;quot;Source Han Sans SC&amp;quot;, &amp;quot;Microsoft YaHei UI&amp;quot;, &amp;quot;Microsoft YaHei&amp;quot;, &amp;quot;Noto Sans CJK SC&amp;quot;, sans-serif; letter-spacing: 0.5px; text-align: left; background-color: rgb(255, 255, 255);&quot;&gt;⭐&lt;/span&gt;&lt;b&gt;&lt;/b&gt;&lt;/div&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=14;" vertex="1" parent="85">
+                    <mxGeometry y="52.77777777777778" width="120" height="147.77777777777777" as="geometry"/>
+                </mxCell>
+                <mxCell id="89" value="&lt;b&gt;同时预测LLM回答质量和token消耗，配合模型表示向量可实现参数共享高效训练和推理；&lt;/b&gt;&lt;div&gt;&lt;span style=&quot;scrollbar-color: rgb(226, 226, 226) rgb(251, 251, 251); font-family: -apple-system, BlinkMacSystemFont, &amp;quot;Segoe UI&amp;quot;, system-ui, -apple-system, &amp;quot;Segoe UI&amp;quot;, Roboto, Ubuntu, Cantarell, &amp;quot;Noto Sans&amp;quot;, sans-serif, Arial, &amp;quot;PingFang SC&amp;quot;, &amp;quot;Source Han Sans SC&amp;quot;, &amp;quot;Microsoft YaHei UI&amp;quot;, &amp;quot;Microsoft YaHei&amp;quot;, &amp;quot;Noto Sans CJK SC&amp;quot;, sans-serif; letter-spacing: 0.5px; text-align: left; background-color: rgb(255, 255, 255); color: rgba(0, 0, 0, 0.9);&quot;&gt;⭐⭐⭐&lt;/span&gt;&lt;b style=&quot;color: rgb(63, 63, 63); scrollbar-color: rgb(226, 226, 226) rgb(251, 251, 251);&quot;&gt;&lt;/b&gt;&lt;span style=&quot;color: rgba(0, 0, 0, 0.9); scrollbar-color: rgb(226, 226, 226) rgb(251, 251, 251); font-family: -apple-system, BlinkMacSystemFont, &amp;quot;Segoe UI&amp;quot;, system-ui, -apple-system, &amp;quot;Segoe UI&amp;quot;, Roboto, Ubuntu, Cantarell, &amp;quot;Noto Sans&amp;quot;, sans-serif, Arial, &amp;quot;PingFang SC&amp;quot;, &amp;quot;Source Han Sans SC&amp;quot;, &amp;quot;Microsoft YaHei UI&amp;quot;, &amp;quot;Microsoft YaHei&amp;quot;, &amp;quot;Noto Sans CJK SC&amp;quot;, sans-serif; letter-spacing: 0.5px; text-align: left; background-color: rgb(255, 255, 255);&quot;&gt;⭐&lt;/span&gt;&lt;b&gt;&lt;/b&gt;&lt;/div&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=14;" vertex="1" parent="85">
+                    <mxGeometry x="150" y="31.666666666666668" width="120" height="126.66666666666667" as="geometry"/>
+                </mxCell>
+                <mxCell id="90" value="" style="group" vertex="1" connectable="0" parent="1">
+                    <mxGeometry x="560" y="1140" width="270" height="170" as="geometry"/>
+                </mxCell>
+                <mxCell id="91" value="" style="shape=tape;whiteSpace=wrap;html=1;size=0.2;" vertex="1" parent="90">
+                    <mxGeometry y="30" width="270" height="140" as="geometry"/>
+                </mxCell>
+                <mxCell id="92" value="&lt;b&gt;对比分析&lt;/b&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=14;" vertex="1" parent="90">
+                    <mxGeometry x="90" width="100" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="93" value="&lt;b&gt;成本是通过LLM在训练集上的平均值，可能无法依据任务复杂性确定cost&lt;br&gt;&lt;/b&gt;&lt;span style=&quot;color: rgba(0, 0, 0, 0.9); font-family: -apple-system, BlinkMacSystemFont, &amp;quot;Segoe UI&amp;quot;, system-ui, -apple-system, &amp;quot;Segoe UI&amp;quot;, Roboto, Ubuntu, Cantarell, &amp;quot;Noto Sans&amp;quot;, sans-serif, Arial, &amp;quot;PingFang SC&amp;quot;, &amp;quot;Source Han Sans SC&amp;quot;, &amp;quot;Microsoft YaHei UI&amp;quot;, &amp;quot;Microsoft YaHei&amp;quot;, &amp;quot;Noto Sans CJK SC&amp;quot;, sans-serif; letter-spacing: 0.5px; text-align: left; background-color: rgb(255, 255, 255);&quot;&gt;⭐⭐⭐&lt;/span&gt;&lt;b&gt;&lt;/b&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=14;" vertex="1" parent="90">
+                    <mxGeometry y="40" width="120" height="120" as="geometry"/>
+                </mxCell>
+                <mxCell id="94" value="&lt;b&gt;结合质量和成本预测结果实现trade-off策略&lt;br&gt;&lt;/b&gt;&lt;span style=&quot;color: rgba(0, 0, 0, 0.9); font-family: -apple-system, BlinkMacSystemFont, &amp;quot;Segoe UI&amp;quot;, system-ui, -apple-system, &amp;quot;Segoe UI&amp;quot;, Roboto, Ubuntu, Cantarell, &amp;quot;Noto Sans&amp;quot;, sans-serif, Arial, &amp;quot;PingFang SC&amp;quot;, &amp;quot;Source Han Sans SC&amp;quot;, &amp;quot;Microsoft YaHei UI&amp;quot;, &amp;quot;Microsoft YaHei&amp;quot;, &amp;quot;Noto Sans CJK SC&amp;quot;, sans-serif; letter-spacing: 0.5px; text-align: left; background-color: rgb(255, 255, 255);&quot;&gt;⭐⭐⭐&lt;/span&gt;&lt;b&gt;&lt;/b&gt;&lt;span style=&quot;color: rgba(0, 0, 0, 0.9); font-family: -apple-system, BlinkMacSystemFont, &amp;quot;Segoe UI&amp;quot;, system-ui, -apple-system, &amp;quot;Segoe UI&amp;quot;, Roboto, Ubuntu, Cantarell, &amp;quot;Noto Sans&amp;quot;, sans-serif, Arial, &amp;quot;PingFang SC&amp;quot;, &amp;quot;Source Han Sans SC&amp;quot;, &amp;quot;Microsoft YaHei UI&amp;quot;, &amp;quot;Microsoft YaHei&amp;quot;, &amp;quot;Noto Sans CJK SC&amp;quot;, sans-serif; letter-spacing: 0.5px; text-align: left; background-color: rgb(255, 255, 255);&quot;&gt;⭐&lt;/span&gt;&lt;span style=&quot;color: rgba(0, 0, 0, 0.9); font-family: -apple-system, BlinkMacSystemFont, &amp;quot;Segoe UI&amp;quot;, system-ui, -apple-system, &amp;quot;Segoe UI&amp;quot;, Roboto, Ubuntu, Cantarell, &amp;quot;Noto Sans&amp;quot;, sans-serif, Arial, &amp;quot;PingFang SC&amp;quot;, &amp;quot;Source Han Sans SC&amp;quot;, &amp;quot;Microsoft YaHei UI&amp;quot;, &amp;quot;Microsoft YaHei&amp;quot;, &amp;quot;Noto Sans CJK SC&amp;quot;, sans-serif; letter-spacing: 0.5px; text-align: left; background-color: rgb(255, 255, 255);&quot;&gt;⭐&lt;/span&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=14;" vertex="1" parent="90">
+                    <mxGeometry x="150" y="30" width="120" height="120" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>
