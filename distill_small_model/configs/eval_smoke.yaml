@@ -1,0 +1,41 @@
+teacher:
+  api_base: https://openrouter.ai/api/v1
+  api_key_env: OPENROUTER_API_KEY
+  model_name: qwen/qwen3-next-80b-a3b-instruct:free
+  system_prompt: You are a careful and knowledgeable teacher model. Answer helpfully, accurately, and concisely.
+  temperature: 0.3
+  top_p: 0.95
+  max_new_tokens: 256
+
+student:
+  tokenizer_name: null
+  model_output_dir: ./artifacts/smoke_student_init_tiny
+  hidden_size: 256
+  intermediate_size: 768
+  num_hidden_layers: 4
+  num_attention_heads: 4
+  num_key_value_heads: 2
+  max_position_embeddings: 1024
+  rope_theta: 1000000.0
+  rms_norm_eps: 1.0e-6
+  local_tokenizer_vocab_size: 1024
+
+training:
+  output_dir: ./artifacts/smoke_checkpoints_tiny
+  max_seq_length: 128
+  bf16: false
+  fp16: false
+  seed: 42
+
+evaluation:
+  eval_data_path: ./data/smoke_eval.jsonl
+  baseline_model_path: ./artifacts/smoke_student_init_tiny
+  distilled_model_path: ./artifacts/smoke_checkpoints_tiny/final
+  output_dir: ./artifacts/smoke_eval
+  max_eval_samples: 4
+  max_new_tokens: 64
+  temperature: 0.0
+  top_p: 1.0
+  judge_with_teacher: false
+  judge_max_new_tokens: 128
+  load_in_8bit: false

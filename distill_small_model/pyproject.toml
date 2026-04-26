@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "qwen-distill-0p2b"
+version = "0.1.0"
+description = "Sequence-level distillation pipeline from OpenRouter qwen/qwen3-next-80b-a3b-instruct:free to a custom Qwen 0.2B student"
+readme = "README.md"
+requires-python = ">=3.10,<3.13"
+dependencies = [
+  "accelerate>=1.6.0",
+  "datasets>=3.5.0",
+  "openai>=1.75.0",
+  "PyYAML>=6.0.2",
+  "safetensors>=0.5.3",
+  "sentencepiece>=0.2.0",
+  "transformers>=4.51.0,<5",
+  "tqdm>=4.67.1"
+]
+
+[project.scripts]
+qwen-distill-generate = "distill_qwen.generate_distill_data:main"
+qwen-distill-train = "distill_qwen.train_student:main"
+qwen-distill-eval = "distill_qwen.evaluate_quality:main"
+
+[tool.setuptools.package-dir]
+"" = "src"
+
+[tool.setuptools.packages.find]
+where = ["src"]

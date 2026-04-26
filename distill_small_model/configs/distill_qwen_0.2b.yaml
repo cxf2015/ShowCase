@@ -1,0 +1,52 @@
+teacher:
+  api_base: https://openrouter.ai/api/v1
+  api_key_env: OPENROUTER_API_KEY
+  model_name: qwen/qwen3-next-80b-a3b-instruct:free
+  fallback_model_names: []
+  system_prompt: You are a careful and knowledgeable teacher model. Answer helpfully, accurately, and concisely.
+  temperature: 0.3
+  top_p: 0.95
+  max_new_tokens: 512
+  max_retries: 8
+  retry_backoff_seconds: 8.0
+  retry_max_backoff_seconds: 90.0
+
+dataset:
+  hf_dataset: yahma/alpaca-cleaned
+  hf_subset: null
+  split: train
+  take_samples: 100
+  local_prompts_path: null
+  output_path: ./artifacts/datasets/openrouter_qwen3_next_80b_distill.jsonl
+  prompt_template: alpaca
+  request_interval_seconds: 6.0
+
+student:
+  tokenizer_name: Qwen/Qwen2.5-0.5B-Instruct
+  model_output_dir: ./artifacts/student_init
+  hidden_size: 640
+  intermediate_size: 2048
+  num_hidden_layers: 12
+  num_attention_heads: 10
+  num_key_value_heads: 2
+  max_position_embeddings: 4096
+  rope_theta: 1000000.0
+  rms_norm_eps: 1.0e-6
+
+training:
+  output_dir: ./artifacts/checkpoints/qwen_0.2b_distill
+  per_device_train_batch_size: 1
+  gradient_accumulation_steps: 32
+  learning_rate: 2.0e-4
+  num_train_epochs: 1
+  max_steps: 0
+  warmup_ratio: 0.03
+  logging_steps: 10
+  save_steps: 200
+  weight_decay: 0.1
+  lr_scheduler_type: cosine
+  max_seq_length: 512
+  gradient_checkpointing: true
+  bf16: false
+  fp16: true
+  seed: 42

@@ -1,0 +1,4 @@
+{"prompt": "解释什么是梯度下降。", "response": "梯度下降是一种优化算法。它通过沿着损失函数梯度的反方向更新参数，使模型误差逐步减小。"}
+{"prompt": "写一个 Python 函数计算阶乘。", "response": "可以使用循环实现：def factorial(n):\n    result = 1\n    for value in range(2, n + 1):\n        result *= value\n    return result"}
+{"prompt": "什么是过拟合？", "response": "过拟合是指模型在训练集上表现很好，但在未见过的数据上泛化能力较差。"}
+{"prompt": "比较列表和元组。", "response": "列表是可变序列，适合频繁修改；元组是不可变序列，适合表达固定结构的数据。"}

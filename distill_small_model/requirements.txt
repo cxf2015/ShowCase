@@ -1,0 +1,2 @@
+# Torch is installed separately by scripts/setup_env.ps1 so the script can select a CUDA wheel when available.
+-e .
